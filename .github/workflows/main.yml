@@ -1,0 +1,19 @@
+name: Build EXE
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install and Build
+        run: |
+          pip install customtkinter pyinstaller
+          pyinstaller --noconfirm --onefile --windowed --collect-all customtkinter shutdown_timer.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ShutdownTimer-EXE
+          path: dist/shutdown_timer.exe
+          
